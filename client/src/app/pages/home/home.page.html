@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Secretly</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="home-div">
+    <ion-card mode="ios">
+      <ion-card-header>
+        <ion-card-title>Get Started</ion-card-title>
+        <ion-card-subtitle>Chatting Secretly!</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-text>
+          <p>Enter a unique username and get started with secretly!</p>
+        </ion-text>
+        <ion-col size="12" class="ion-margin-bottom margin-top-1">
+          <ion-item fill="outline" mode="md">
+            <ion-label position="floating">Choose Username</ion-label>
+            <ion-input
+              required
+              autofocus=""
+              id="username"
+              name="username"
+              [(ngModel)]="username"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-button
+          [disabled]="!username || username.trim().length === 0"
+          (click)="createUser()"
+          expand="block"
+          >Start Secretly!</ion-button
+        >
+
+        <!-- <ion-item>
+          <ion-label position="floating">Choose Username</ion-label>
+        </ion-item> -->
+      </ion-card-content>
+      <!--
+    <ion-text color="secondary">
+      <h1>Get Started</h1>
+    </ion-text>
+     <ion-text color="primary">
+      <h2>by choosing a username</h2>
+    </ion-text> -->
+    </ion-card>
+  </div>
+</ion-content>

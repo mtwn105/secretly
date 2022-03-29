@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Chats</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="authService.signOut()" color="danger" fill="solid">
+        Logout
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="chats-div">
+    <ion-text>
+      <p>
+        Copy the secretly chat link and invite your friends to chat with you.
+      </p>
+    </ion-text>
+
+    <ion-button (click)="copyLink()">Copy Link</ion-button>
+  </div>
+</ion-content>

@@ -27,29 +27,46 @@ app.use(morgan("combined"));
 app.post("/api/v1/user", async (req, res) => {
   const { username, avatar } = req.body;
 
-  // Create a JWT token
-  const token = jwt.sign(
-    { username, avatar, created_at: new Date().getTime() },
-    process.env.TOKEN_SECRET
-  );
-
   const mutation = gql`
-    mutation createUser($username: String!, $avatar: String!, $token: String!) {
-      insert_users_one(
-        object: { username: $username, avatar: $avatar, token: $token }
-      ) {
+    mutation createUser($username: String!, $avatar: String!) {
+      insert_users_one(object: { username: $username, avatar: $avatar }) {
         id
         user_id
         username
         avatar
-        token
       }
     }
   `;
 
-  const result = await client.request(mutation, { username, avatar, token });
+  try {
+    const result = await client.request(mutation, { username, avatar });
 
-  res.json(result);
+    const user = result.insert_users_one;
+
+    // Create a JWT token
+    const token = jwt.sign(
+      {
+        username,
+        avatar,
+        created_at: new Date().getTime(),
+        "https://hasura.io/jwt/claims": {
+          "x-hasura-allowed-roles": ["user"],
+          "x-hasura-default-role": "user",
+          "x-hasura-user-id": user.id.toString(),
+        },
+      },
+      process.env.TOKEN_SECRET
+    );
+
+    user.token = token;
+
+    return res.status(201).json({
+      status: "success",
+      data: user,
+    });
+  } catch (err) {
+    return res.status(500).json({ status: "error", message: err.message });
+  }
 });
 
 const port = process.env.PORT || 3000;
