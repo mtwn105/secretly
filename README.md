@@ -22,7 +22,7 @@ You can visit the live app [here](https://secretly.amitwani.dev)
 
 - **Backend:** NodeJS, Express
 - **Frontend:** Angular, Ionic
-- **Database:** Postgres using *Railway.app *
+- **Database:** Postgres using *Railway.app*
 - **API:** GraphQL using *Hasura*
 - **DevOps:** Docker
 - **Deployment:** Fly.io, Firebase
