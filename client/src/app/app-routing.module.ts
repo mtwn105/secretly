@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'home', component: HomePage },
   { path: 'chats', component: ChatsPage, canActivate: [AuthGuard] },
   { path: 'chats/invite/:user_id', component: ChatInvitePage },
-  { path: 'chat-screen', component: ChatScreenPage, canActivate: [AuthGuard] },
+  { path: 'chat/:username/:chat_id', component: ChatScreenPage, canActivate: [AuthGuard] },
 ];
 @NgModule({
   imports: [

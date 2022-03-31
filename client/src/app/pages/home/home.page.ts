@@ -10,8 +10,6 @@ import { ToastController } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
 
-  username;
-
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -22,11 +20,7 @@ export class HomePage implements OnInit {
   }
 
   createUser() {
-    console.log('creating user: ' + this.username);
-
-    this.username = this.username.trim();
-
-    this.authService.createUser(this.username, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png').subscribe(async (res: any) => {
+    this.authService.createUser().subscribe(async (res: any) => {
       const response = res.data;
       this.authService.login(response);
 

@@ -8,47 +8,26 @@
   <div class="home-div">
     <ion-card mode="ios">
       <ion-card-header>
-        <ion-card-title>Connecting to {{inviteUsername}}!</ion-card-title>
+        <ion-card-title>Connecting to your friend!</ion-card-title>
         <ion-card-subtitle>Get Started</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
-        <ng-container *ngIf="!authService.isLoggedIn">
+        <ng-container
+          *ngIf="!authService.isLoggedIn || (authService.isLoggedIn && !sameUser)"
+        >
           <ion-text>
-            <p>Enter a unique username and get started with secretly!</p>
-          </ion-text>
-          <ion-col size="12" class="ion-margin-bottom margin-top-1">
-            <ion-item fill="outline" mode="md">
-              <ion-label position="floating">Choose Username</ion-label>
-              <ion-input
-                required
-                autofocus=""
-                id="username"
-                name="username"
-                [(ngModel)]="username"
-              ></ion-input>
-            </ion-item>
-          </ion-col>
+            <p>Login first to get chatting on secretly!</p>
 
+            <p>Get connected with your friend by clicking button below!</p>
+          </ion-text>
           <ion-button
-            [disabled]="!username || username.trim().length === 0"
-            (click)="createUser()"
+            (click)="authService.isLoggedIn && !sameUser ? getUserDetailsAndCreateChat() : createUser()"
             expand="block"
             >Start Secretly!</ion-button
           >
         </ng-container>
 
-        <ng-container *ngIf="authService.isLoggedIn && !sameUser">
-          <ion-text>
-            <p>
-              Get connected with {{inviteUsername}} by clicking button below!
-            </p>
-          </ion-text>
-
-          <ion-button (click)="createChat()" expand="block"
-            >Start Secretly!</ion-button
-          >
-        </ng-container>
         <ng-container *ngIf="authService.isLoggedIn && sameUser">
           <ion-text color="danger">
             <h1>You cannot talk to yourself :)</h1>

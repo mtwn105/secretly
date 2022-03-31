@@ -1,0 +1,39 @@
+
+.chat-div{
+  margin: 1rem;
+}
+
+.chat-content{
+  overflow-y: auto;
+  height: calc(100vh - 10rem);
+  padding-bottom: 1rem;
+}
+
+.message-card {
+  max-width: 200px;
+  width: fit-content;
+  word-wrap: break-word;
+  margin: 0.5rem;
+
+  ion-card-content {
+    padding: 0.7rem;
+  }
+
+}
+
+.chat-message-left{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.chat-message-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.timestamp-span {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}

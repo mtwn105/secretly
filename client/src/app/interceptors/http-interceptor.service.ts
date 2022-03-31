@@ -1,7 +1,7 @@
 import { ToastController } from '@ionic/angular';
 import { AuthService } from './../services/auth.service';
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -20,7 +20,13 @@ export class AuthInterceptor implements HttpInterceptor {
     //   return next.handle(req);
     // }
 
-    return next.handle(req).pipe(
+    const authReq = req.clone({
+      // headers: new HttpHeaders(this.getHeaders())
+    });
+
+    console.log('Intercepted HTTP call', authReq);
+
+    return next.handle(authReq).pipe(
       catchError(
         (err, caught) => {
           if (err.status === 401) {
@@ -32,6 +38,24 @@ export class AuthInterceptor implements HttpInterceptor {
       )
     );
   }
+
+  getHeaders = () => {
+
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+
+    if (!token || !user || !JSON.parse(user).id) {
+      return {
+        Accept: 'charset=utf-8',
+        'X-Hasura-Role': 'anonymous',
+      };
+    } else {
+      return {
+        Accept: 'charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      };
+    }
+  };
 
   async handleAuthError() {
     const toast = await this.toastController.create({

@@ -2,9 +2,27 @@
   <ion-toolbar>
     <ion-title>Chats</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="authService.signOut()" color="danger" fill="solid">
+      <ion-button id="logout-popup" color="danger" fill="solid">
         Logout
       </ion-button>
+      <ion-popover [dismissOnSelect]="true" trigger="logout-popup">
+        <ng-template>
+          <ion-content>
+            <p class="margin-1">
+              Are you sure you want to logout? All chats and messages will be
+              lost.
+            </p>
+            <ion-button
+              class="margin-1"
+              (click)="signOut()"
+              color="danger"
+              fill="solid"
+            >
+              Logout
+            </ion-button>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -18,5 +36,49 @@
     </ion-text>
 
     <ion-button (click)="copyLink()">Copy Link</ion-button>
+
+    <ion-text>
+      <p class="font-small">
+        <strong>Note:</strong>
+        <br />
+        If you logout or clear browser cache, you will lose all the chats and
+        messages.
+      </p>
+    </ion-text>
+  </div>
+
+  <div class="chat-users-div">
+    <ion-list *ngIf="!!chats && chats.length > 0">
+      <ng-container *ngFor="let chat of chats">
+        <ion-item button (click)="openChat(chat)">
+          <ion-label class="ion-text-wrap">
+            <ion-text color="primary">
+              <h1>
+                {{loggedInUser.username === chat?.user2?.username ?
+                chat?.user1?.username:chat?.user2?.username }}
+              </h1>
+            </ion-text>
+            <ion-text>
+              <p *ngIf="!!chat.messages[0]" class="color-gray">
+                {{chat.messages[0].from === loggedInUser.id ? 'You: ' : ''}}
+                {{chat.messages[0].message}}
+              </p>
+              <span class="font-small color-gray">
+                {{(chat.messages[0]?.created_at ? chat.messages[0]?.created_at :
+                chat.last_message_at) | date: "medium"}}
+              </span>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+
+    <ion-text *ngIf="!chats || chats.length=== 0">
+      <p>
+        You don't have any chats.
+        <br />
+        Start chatting by sharing your chat link with your friends.
+      </p>
+    </ion-text>
   </div>
 </ion-content>

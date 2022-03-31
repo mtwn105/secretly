@@ -1,3 +1,4 @@
+import { ChatScreenPageModule } from './pages/chat-screen/chat-screen.module';
 import { ChatInvitePageModule } from './pages/chat-invite/chat-invite.module';
 import { ChatsPageModule } from './pages/chats/chats.module';
 
@@ -34,6 +35,7 @@ import { GraphQLModule } from './graphql.module';
     HomePageModule,
     ChatsPageModule,
     ChatInvitePageModule,
+    ChatScreenPageModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

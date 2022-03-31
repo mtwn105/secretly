@@ -1,9 +1,85 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chat-screen</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/chats"></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{username}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div class="chat-div">
+    <!-- Create a chatting window with an input at the bottom with button to send chat -->
+    <div #chatContainer class="chat-content">
+      <div class="chat-messages">
+        <div class="chat-message">
+          <ng-container *ngIf="!!messages && messages.length > 0">
+            <ng-container *ngFor="let message of messages">
+              <div
+                *ngIf="message.from !== loggedInUser.id"
+                class="chat-message-left"
+              >
+                <ion-card color="primary" class="message-card" mode="ios">
+                  <ion-card-content>
+                    <ion-text>
+                      <p>{{message.message}}</p>
+                    </ion-text>
+                  </ion-card-content>
+                </ion-card>
+              </div>
+              <div
+                *ngIf="message.from !== loggedInUser.id"
+                class="chat-message-left"
+              >
+                <span class="timestamp-span font-small color-gray"
+                  >{{message.created_at | date: "medium"}}</span
+                >
+              </div>
+              <div
+                *ngIf="message.from === loggedInUser.id"
+                class="chat-message-right"
+              >
+                <div>
+                  <ion-card color="tertiary" class="message-card" mode="ios">
+                    <ion-card-content>
+                      <ion-text>
+                        <p>{{message.message}}</p>
+                      </ion-text>
+                    </ion-card-content>
+                  </ion-card>
+                </div>
+              </div>
+              <div
+                *ngIf="message.from === loggedInUser.id"
+                class="chat-message-right"
+              >
+                <span class="timestamp-span font-small color-gray"
+                  >{{message.created_at | date: "medium"}}</span
+                >
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <ion-item fill="solid" mode="md">
+        <ion-label position="floating">Type a message</ion-label>
+        <ion-input
+          (keyup.enter)="sendMessage()"
+          autofocus=""
+          id="message"
+          name="message"
+          [(ngModel)]="message"
+        ></ion-input>
+        <ion-button
+          *ngIf="!!message && message.trim().length > 0"
+          (click)="sendMessage()"
+          slot="end"
+        >
+          <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+  </div>
 </ion-content>

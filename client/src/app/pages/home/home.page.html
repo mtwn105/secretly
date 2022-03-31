@@ -14,25 +14,22 @@
 
       <ion-card-content>
         <ion-text>
-          <p>Enter a unique username and get started with secretly!</p>
-        </ion-text>
-        <ion-col size="12" class="ion-margin-bottom margin-top-1">
-          <ion-item fill="outline" mode="md">
-            <ion-label position="floating">Choose Username</ion-label>
-            <ion-input
-              required
-              autofocus=""
-              id="username"
-              name="username"
-              [(ngModel)]="username"
-            ></ion-input>
-          </ion-item>
-        </ion-col>
+          <p>Click on the button below to get started with Secretly!</p>
 
-        <ion-button
-          [disabled]="!username || username.trim().length === 0"
-          (click)="createUser()"
-          expand="block"
+          <p><br /></p>
+
+          <p>
+            <strong>Note:</strong>
+
+            If you logout or clear browser cache, you will lose all the chats
+            and messages.
+
+            <br />
+            <br />
+          </p>
+        </ion-text>
+
+        <ion-button (click)="createUser()" expand="block"
           >Start Secretly!</ion-button
         >
 

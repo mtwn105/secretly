@@ -5,8 +5,9 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3003/api/v1',
-  appUrl: 'http://localhost:8100',
-  graphQlUrl: 'https://optimum-hedgehog-12.hasura.app/v1/graphql'
+  appUrl: 'http://localhost:4200',
+  graphQlUrl: 'https://optimum-hedgehog-12.hasura.app/v1/graphql',
+  graphQlUrlSubscription: 'wss://optimum-hedgehog-12.hasura.app/v1/graphql'
 };
 
 /*

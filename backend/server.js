@@ -4,6 +4,15 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const jwt = require("jsonwebtoken");
 const { gql, GraphQLClient } = require("graphql-request");
+const expressStaticGzip = require("express-static-gzip");
+
+const {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} = require("unique-names-generator");
+const mutations = require("./graphql/mutation");
 
 require("dotenv").config();
 
@@ -20,26 +29,20 @@ const app = express();
 app.use(express.json());
 app.use(express.text());
 
-app.use(helmet());
+// app.use(helmet());
 app.use(cors());
 app.use(morgan("combined"));
 
 app.post("/api/v1/user", async (req, res) => {
-  const { username, avatar } = req.body;
-
-  const mutation = gql`
-    mutation createUser($username: String!, $avatar: String!) {
-      insert_users_one(object: { username: $username, avatar: $avatar }) {
-        id
-        user_id
-        username
-        avatar
-      }
-    }
-  `;
+  const mutation = mutations.createUser;
 
   try {
-    const result = await client.request(mutation, { username, avatar });
+    const username = uniqueNamesGenerator({
+      dictionaries: [adjectives, animals, colors],
+      length: 2,
+    });
+
+    const result = await client.request(mutation, { username });
 
     const user = result.insert_users_one;
 
@@ -47,7 +50,6 @@ app.post("/api/v1/user", async (req, res) => {
     const token = jwt.sign(
       {
         username,
-        avatar,
         created_at: new Date().getTime(),
         "https://hasura.io/jwt/claims": {
           "x-hasura-allowed-roles": ["user"],
@@ -71,12 +73,23 @@ app.post("/api/v1/user", async (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-app.get(
-  "*.*",
-  express.static("public/client", {
-    maxAge: "1y",
-  })
-);
+// Error Handler
+const notFound = (req, res, next) => {
+  res.status(404);
+  const error = new Error(`Not Found - ${req.originalUrl}`);
+  next(error);
+};
+
+const errorHandler = (err, req, res) => {
+  res.status(res.statusCode || 500);
+  res.json({
+    error: err.name,
+    message: err.message,
+  });
+};
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Secretly application is running on port ${port}.`);
